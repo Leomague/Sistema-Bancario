@@ -1,4 +1,5 @@
-const { contas,usuario } = require('../bancodedados');
+const { contas,usuario, depositos, saques } = require('../bancodedados');
+const { format } = require('date-fns');
 let numero = 2;
 
 const listarContas = (req, res) =>  {
@@ -114,8 +115,63 @@ const excluirConta = (req, res) => {
 
     contas.splice(numeroContaDigitado, 1);
 
-    return res.json({ mensagem: "Conta removida." });
+    return res.json({ mensagem: "Conta excluída com sucesso" });
 };
+
+const depositar = (req, res) => {
+
+    const { numero_conta, valor } = req.body;
+
+    if(!numero_conta || !valor) {
+        return res.status(400).json({ mensagem: "É necessario informar o campo"})
+    }
+
+    const varrerConta = depositos.find(conta => conta.numero_conta === numero_conta);
+
+    if(!varrerConta) {
+        return res.status(404).json({ mensagem: "A conta não foi encontrada"})
+    }
+
+    varrerConta.saldo += valor;
+
+    const operacaoDeposito = {
+        data: new Date().toISOString(),
+        numero_conta,
+        valor,
+    };
+
+
+
+    res.status(200).json({ mensagem: "Depósito realizado"});
+}
+
+const sacar = (req, res) => {
+    const { numero_conta, valor, senha } = req.body;
+
+    const varrerContaSaldo = saques.find(valor => valor.numero_conta === numero_conta);
+
+    if(!varrerContaSaldo) {
+        return res.status(404).json({ mensagem: "A conta não foi encontrada"});
+    }
+
+    if(varrerContaSaldo.senha !== senha) {
+        return res.status(400).json({ mensagem: "Senha incorreta"});
+    }
+
+    if(varrerContaSaldo.saldo < Number(valor)) {
+        return res.status(400).json({ mensagem: "Saldo não é suficiente"});
+    }
+
+    varrerContaSaldo.saldo -= valor;
+
+    const operacaoSaque = {
+        data: new Date().toISOString(),
+        numero_conta,
+        valor
+    };
+
+    return res.status(200).json({ mensagem: "Saque realizado"});
+}
 
     
 
@@ -124,6 +180,8 @@ module.exports = {
     listarContas,
     criarContas,
     atualizarContaUsuario,
-    excluirConta
+    excluirConta,
+    depositar,
+    sacar
     
 }

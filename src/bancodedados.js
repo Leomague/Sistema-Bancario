@@ -18,7 +18,14 @@ module.exports = {
         }
     }
 ],
-    saques: [],
-    depositos: [],
+    saques: [{
+        numero_conta: "1",
+        valor: 10000,
+        senha: "1234"
+    }],
+    depositos: [{
+        numero_conta : "1",
+        valor : 10000
+    }],
     transferencias: []
 }
