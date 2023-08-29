@@ -1,4 +1,4 @@
-const { contas, depositos, saques, transferencias } = require('../bancodedados');
+const { contas, depositos, saques, transferencias,operacaoDeposito, operacaoSaque } = require('../bancodedados');
 const { format } = require('date-fns');
 let numero = 2;
 
@@ -138,10 +138,11 @@ const depositar = (req, res) => {
     const operacaoDeposito = {
         data: new Date().toISOString(),
         numero_conta,
-        valor,
+        valor
     };
     
     res.status(200).json({ mensagem: "Depósito realizado"});
+    return res.status(200).json(operacaoDeposito);
 }
 
 const sacar = (req, res) => {
@@ -168,7 +169,7 @@ const sacar = (req, res) => {
         numero_conta,
         valor
     };
-
+    console.log(operacaoSaque)
     return res.status(200).json({ mensagem: "Saque realizado"});
 }
 
@@ -203,6 +204,55 @@ const transferir = (req, res) => {
     return res.status(200).json({ mensagem: "Transferência realizada" });
 }
 
+const consultarSaldo = (req, res) => {
+    const { numero_conta, senha } = req.query;
+
+    if(!numero_conta || !senha) {
+        return res.status(400).json({ mensagem: "É preciso informar o número da conta e senha"});
+    }
+
+    const varrerContaSaldo = contas.find(conta => conta.numero === Number(numero_conta));
+
+    if(!varrerContaSaldo) {
+        return res.status(404).json({ mensagem: "A conta não foi encontrada"});
+    }
+
+    if(varrerContaSaldo.usuario.senha !== senha) {
+        return res.status(400).json({ mensagem: "Senha incorreta"});
+    }
+
+    return res.json({ saldo: varrerContaSaldo.saldo});
+
+}
+
+const consultaExtrato = (req, res) => {
+    const { numero_conta, senha } = req.query;
+
+    if((!numero_conta || !senha)) {
+        return res.status(400).json({ mensagem: "O campo numero da conta e senha precisa ser informado"});
+    }
+
+    const varrerContaExtrato = contas.find(conta => conta.numero === Number(numero_conta));
+
+    if(!varrerContaExtrato) {
+        return res.status(404).json({ mensagem: "A conta não foi encontrada"});
+    }
+
+    if(varrerContaExtrato.usuario.senha !== senha) {
+        return res.status(400).json({ mensagem: "Senha incorreta"});
+    }
+
+    const extrato = {
+        depositos: [ ],
+        saques: [ ],
+        transferenciasEviadas: [ ],
+        transferenciasRecebidase: [ ]
+    }
+
+    return res.status(200).json(extrato);
+
+}
+
 module.exports = {
     listarContas,
     criarContas,
@@ -210,6 +260,8 @@ module.exports = {
     excluirConta,
     depositar,
     sacar,
-    transferir
+    transferir,
+    consultarSaldo,
+    consultaExtrato
     
 }
