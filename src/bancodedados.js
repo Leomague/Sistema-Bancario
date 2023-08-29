@@ -27,5 +27,10 @@ module.exports = {
         numero_conta : "1",
         valor : 10000
     }],
-    transferencias: []
+    transferencias: [{
+        numero_conta_origem: "1",
+        numero_conta_destino: "2",
+        valor: 10000,
+        senha: "1234"
+    }]
 }

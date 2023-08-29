@@ -1,4 +1,4 @@
-const { contas,usuario, depositos, saques } = require('../bancodedados');
+const { contas, depositos, saques, transferencias } = require('../bancodedados');
 const { format } = require('date-fns');
 let numero = 2;
 
@@ -12,7 +12,7 @@ const listarContas = (req, res) =>  {
     }  
 }
 const criarContas = (req, res) => {
-    const { nome, cpf, data_nascimento, telefone, email, senha, saldo} = req.body;
+    const { nome, cpf, data_nascimento, telefone, email, senha } = req.body;
 
     const emailExistente = contas.find(conta => conta.usuario.email === String(email));
     if(emailExistente){
@@ -71,16 +71,6 @@ const criarContas = (req, res) => {
 const atualizarContaUsuario = (req, res) => {
     const { nome, cpf, data_nascimento, telefone, email, senha } = req.body;
 
-    const cpfExistenteAtualizar = contas.find(conta => conta.usuario.cpf === cpf);
-    if (cpfExistenteAtualizar && cpfExistenteAtualizar.numero !== Number(req.params.numeroConta)) {
-        return res.status(400).json({ mensagem: "CPF não pode ser alterado, associado a outra conta" });
-    }
-
-    const emailExistenteAtualizar = contas.find(conta => conta.usuario.email === email);
-    if (emailExistenteAtualizar && emailExistenteAtualizar.numero !== Number(req.params.numeroConta)) {
-        return res.status(400).json({ mensagem: "Email não pode ser alterado, associado a outra conta" });
-    }
-
     if (!nome || !data_nascimento || !telefone || !senha) {
         return res.status(400).json({ mensagem: "Campos obrigatórios não foram preenchidos" });
     }
@@ -88,6 +78,17 @@ const atualizarContaUsuario = (req, res) => {
     const numeroContaExistente = contas.find(conta => conta.numero === Number(req.params.numeroConta));
     if (!numeroContaExistente) {
         return res.status(404).json({ mensagem: "Número de conta não encontrado para usuário cadastrado" });
+    }
+
+    const cpfExistenteAtualizar = contas.find(conta => conta.usuario.cpf === cpf);
+    
+    if (cpfExistenteAtualizar) {
+        return res.status(400).json({ mensagem: "CPF não pode ser alterado, associado a outra conta" });
+    }
+
+    const emailExistenteAtualizar = contas.find(conta => conta.usuario.email === email);
+    if (emailExistenteAtualizar) {
+        return res.status(400).json({ mensagem: "Email não pode ser alterado, associado a outra conta" });
     }
 
     numeroContaExistente.usuario.nome = nome;
@@ -126,35 +127,33 @@ const depositar = (req, res) => {
         return res.status(400).json({ mensagem: "É necessario informar o campo"})
     }
 
-    const varrerConta = depositos.find(conta => conta.numero_conta === numero_conta);
+    const varrerConta = contas.find(conta => conta.numero === Number(numero_conta));
 
     if(!varrerConta) {
         return res.status(404).json({ mensagem: "A conta não foi encontrada"})
     }
 
-    varrerConta.saldo += valor;
+    varrerConta.saldo += Number(valor);
 
     const operacaoDeposito = {
         data: new Date().toISOString(),
         numero_conta,
         valor,
     };
-
-
-
+    
     res.status(200).json({ mensagem: "Depósito realizado"});
 }
 
 const sacar = (req, res) => {
     const { numero_conta, valor, senha } = req.body;
 
-    const varrerContaSaldo = saques.find(valor => valor.numero_conta === numero_conta);
+    const varrerContaSaldo = contas.find(conta => conta.numero === Number(numero_conta));
 
     if(!varrerContaSaldo) {
         return res.status(404).json({ mensagem: "A conta não foi encontrada"});
     }
 
-    if(varrerContaSaldo.senha !== senha) {
+    if(varrerContaSaldo.usuario.senha !== senha) {
         return res.status(400).json({ mensagem: "Senha incorreta"});
     }
 
@@ -162,7 +161,7 @@ const sacar = (req, res) => {
         return res.status(400).json({ mensagem: "Saldo não é suficiente"});
     }
 
-    varrerContaSaldo.saldo -= valor;
+    varrerContaSaldo.saldo -= Number(valor);
 
     const operacaoSaque = {
         data: new Date().toISOString(),
@@ -173,8 +172,36 @@ const sacar = (req, res) => {
     return res.status(200).json({ mensagem: "Saque realizado"});
 }
 
-    
+const transferir = (req, res) => {
+    const { numero_conta_origem, numero_conta_destino, valor, senha } = req.body;
 
+    const contaOrigem = contas.find(conta => conta.numero === Number(numero_conta_origem));
+    const contaDestino = contas.find(conta => conta.numero === Number(numero_conta_destino));
+
+    if (!contaOrigem || !contaDestino ){
+        return res.status(400).json({ mensagem: "Nenhuma conta encontrada" });
+    }
+
+    if(contaOrigem.usuario.senha !== senha) {
+        return res.status(400).json({ mensagem: "Senha incorreta"});
+    }
+    
+    if (contaOrigem.saldo < valor) {
+        return res.status(400).json({ mensagem: "Saldo insuficiente" });
+    }
+
+    contaOrigem.saldo -= valor;
+    contaDestino.saldo += valor;
+
+    const operacaoTransferencia = {
+        data: new Date().toISOString(),
+        numero_conta_origem,
+        numero_conta_destino,
+        valor
+    };
+    
+    return res.status(200).json({ mensagem: "Transferência realizada" });
+}
 
 module.exports = {
     listarContas,
@@ -182,6 +209,7 @@ module.exports = {
     atualizarContaUsuario,
     excluirConta,
     depositar,
-    sacar
+    sacar,
+    transferir
     
 }
