@@ -1,5 +1,5 @@
 const express = require('express');
-const { format } = require('date-fns');
+const moment = require('moment');
 const { listarContas,criarContas, atualizarContaUsuario, excluirConta, depositar, sacar, transferir, consultarSaldo, consultaExtrato} = require('./controladores/contasbancarias');
 const validaSenha = require('./intermediarios');
 

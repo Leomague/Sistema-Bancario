@@ -1,5 +1,5 @@
 const { contas, depositos, saques, transferencias } = require('../bancodedados');
-const { format } = require('date-fns');
+const moment = require('moment')
 let numero = 2;
 let extrato = []
 
@@ -138,7 +138,7 @@ const depositar = (req, res) => {
 
     const operacaoDeposito = {
         depositos: "Realizados.........",
-        data: new Date().toISOString(),
+        data: moment().format("YYYY-MM-DD HH:mm:ss"),
         numero_conta,
         valor
     };
@@ -169,7 +169,7 @@ const sacar = (req, res) => {
 
     const operacaoSaque = {
         saques: "Saques Realizados.........",
-        data: new Date().toISOString(),
+        data: moment().format("YYYY-MM-DD HH:mm:ss"),
         numero_conta,
         valor
     };
@@ -202,7 +202,7 @@ const transferir = (req, res) => {
 
     const operacaoTransferenciaContaOrigem = {
         transferencias: "Recebidas.........",
-        data: new Date().toISOString(),
+        data: moment().format("YYYY-MM-DD HH:mm:ss"),
         numero_conta_origem,
         valor
     };
@@ -211,7 +211,7 @@ const transferir = (req, res) => {
 
     const operacaoTransferenciaContaDestino = {
         transferencias: "Enviadas.........",
-        data: new Date().toISOString(), 
+        data: moment().format("YYYY-MM-DD HH:mm:ss"), 
         numero_conta_destino,
         valor
     };
