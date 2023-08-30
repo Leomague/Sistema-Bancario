@@ -201,7 +201,7 @@ const transferir = (req, res) => {
     contaDestino.saldo += valor;
 
     const operacaoTransferenciaContaOrigem = {
-        transferencias: "Recebidas.........",
+        transferencias: "Enviadas.........",
         data: moment().format("YYYY-MM-DD HH:mm:ss"),
         numero_conta_origem,
         valor
@@ -210,7 +210,7 @@ const transferir = (req, res) => {
     extrato.push(operacaoTransferenciaContaOrigem)
 
     const operacaoTransferenciaContaDestino = {
-        transferencias: "Enviadas.........",
+        transferencias: "Recebidas.........",
         data: moment().format("YYYY-MM-DD HH:mm:ss"), 
         numero_conta_destino,
         valor
