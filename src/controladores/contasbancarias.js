@@ -168,7 +168,7 @@ const sacar = (req, res) => {
     varrerContaSaldo.saldo -= Number(valor);
 
     const operacaoSaque = {
-        saques: "Saques Realizados.........",
+        saques: "Realizados.........",
         data: moment().format("YYYY-MM-DD HH:mm:ss"),
         numero_conta,
         valor
