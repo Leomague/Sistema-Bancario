@@ -1,4 +1,4 @@
-const { contas, depositos, saques, transferencias } = require('../bancodedados');
+const { contas, banco } = require('../bancodedados');
 const moment = require('moment')
 let numero = 2;
 let extrato = []
@@ -7,10 +7,14 @@ const listarContas = (req, res) =>  {
     if(req.query.senha_banco){
     return res.json(contas);
 }
-    const buscarSenha = contas.find(senha => senha === req.query.senha_banco);
+    const buscarSenha = banco.find(buscaSenha => buscaSenha.senha === req.query.senha_banco);
     if(!buscarSenha) {
         return res.status(404).json({ mensagem: "É preciso informar o campo senha_banco"});
-    }  
+    } 
+    
+    if(buscarSenha.senha !== req.query.senha_banco) {
+        return res.status(404).json({ mensagem: "Senha incorreta"});
+    } 
 }
 const criarContas = (req, res) => {
     const { nome, cpf, data_nascimento, telefone, email, senha } = req.body;
@@ -201,18 +205,20 @@ const transferir = (req, res) => {
     contaDestino.saldo += valor;
 
     const operacaoTransferenciaContaOrigem = {
-        transferencias: "Enviadas.........",
+        transferencias: "Recebidas.........",
         data: moment().format("YYYY-MM-DD HH:mm:ss"),
         numero_conta_origem,
+        numero_conta_destino,
         valor
     };
 
     extrato.push(operacaoTransferenciaContaOrigem)
 
     const operacaoTransferenciaContaDestino = {
-        transferencias: "Recebidas.........",
-        data: moment().format("YYYY-MM-DD HH:mm:ss"), 
+        transferencias: "Enviadas.........",
+        data: moment().format("YYYY-MM-DD HH:mm:ss"),
         numero_conta_destino,
+        numero_conta_origem, 
         valor
     };
     
