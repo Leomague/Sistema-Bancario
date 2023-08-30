@@ -1,6 +1,7 @@
-const { contas, depositos, saques, transferencias,operacaoDeposito, operacaoSaque } = require('../bancodedados');
+const { contas, depositos, saques, transferencias } = require('../bancodedados');
 const { format } = require('date-fns');
 let numero = 2;
+let extrato = []
 
 const listarContas = (req, res) =>  {
     if(req.query.senha_banco){
@@ -136,13 +137,15 @@ const depositar = (req, res) => {
     varrerConta.saldo += Number(valor);
 
     const operacaoDeposito = {
+        depositos: "Realizados.........",
         data: new Date().toISOString(),
         numero_conta,
         valor
     };
+
+    extrato.push(operacaoDeposito)
     
-    res.status(200).json({ mensagem: "Depósito realizado"});
-    return res.status(200).json(operacaoDeposito);
+    return res.status(200).json({ mensagem: "Depósito realizado"});
 }
 
 const sacar = (req, res) => {
@@ -165,11 +168,14 @@ const sacar = (req, res) => {
     varrerContaSaldo.saldo -= Number(valor);
 
     const operacaoSaque = {
+        saques: "Saques Realizados.........",
         data: new Date().toISOString(),
         numero_conta,
         valor
     };
-    console.log(operacaoSaque)
+
+    extrato.push(operacaoSaque);
+
     return res.status(200).json({ mensagem: "Saque realizado"});
 }
 
@@ -194,13 +200,24 @@ const transferir = (req, res) => {
     contaOrigem.saldo -= valor;
     contaDestino.saldo += valor;
 
-    const operacaoTransferencia = {
+    const operacaoTransferenciaContaOrigem = {
+        transferencias: "Recebidas.........",
         data: new Date().toISOString(),
         numero_conta_origem,
+        valor
+    };
+
+    extrato.push(operacaoTransferenciaContaOrigem)
+
+    const operacaoTransferenciaContaDestino = {
+        transferencias: "Enviadas.........",
+        data: new Date().toISOString(), 
         numero_conta_destino,
         valor
     };
     
+    extrato.push(operacaoTransferenciaContaDestino)
+
     return res.status(200).json({ mensagem: "Transferência realizada" });
 }
 
@@ -241,14 +258,7 @@ const consultaExtrato = (req, res) => {
     if(varrerContaExtrato.usuario.senha !== senha) {
         return res.status(400).json({ mensagem: "Senha incorreta"});
     }
-
-    const extrato = {
-        depositos: [ ],
-        saques: [ ],
-        transferenciasEviadas: [ ],
-        transferenciasRecebidase: [ ]
-    }
-
+    
     return res.status(200).json(extrato);
 
 }
