@@ -1,6 +1,6 @@
 const { contas, banco } = require('../bancodedados');
 const moment = require('moment')
-let numero = 2;
+let numero = 1;
 let extrato = []
 
 const listarContas = (req, res) =>  {
