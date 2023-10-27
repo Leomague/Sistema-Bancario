@@ -613,4 +613,4 @@ Essa é a rota que será utilizada para  listar as transações realizadas de um
     mensagem: 'Mensagem do erro!'
 }
 ```
-![Alt text](extratoDesafio2-1.jpg)
+![Alt text](arquivos/extratoDesafio2-1.jpg)
