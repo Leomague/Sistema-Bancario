@@ -78,6 +78,7 @@ Essa é a rota que será utilizada para listar todas as contas bancárias existe
 // nenhuma conta encontrada
 []
 ```
+![Alt text](arquivos/Listar Contas desafio 02.jpg)
 
 ### **Criar conta bancária**
 
@@ -154,6 +155,7 @@ Essa é a rota que será utilizada para criar uma conta bancária, onde será ge
     mensagem: 'Mensagem de erro'
 }
 ```
+![Alt text](arquivos/criar conta bancaria desafio 02.jpg)
 
 ### **Atualizar usuário da conta bancária**
 
@@ -221,6 +223,7 @@ Essa é a rota que será utilizada para atualizar os dados do usuário de uma co
     mensagem: "Mensagem de erro"
 }
 ```
+![Alt text](arquivos/atualizarUsuario-desafio2.jpg)
 
 ### **Excluir Conta**
 
@@ -266,6 +269,7 @@ Essa é a rota que será utilizada para excluir uma conta bancária existente.
     mensagem: "Mensagem de erro"
 }
 ```
+![Alt text](arquivos/Delete-desafio2.jpg)
 
 ### **Depositar**
 
@@ -329,6 +333,7 @@ Essa é a rota que será utilizada para somar o valor do depósito ao saldo de u
     valor: 10000
 }
 ```
+![Alt text](arquivos/Depositar-Desafio2.jpg)
 
 ### **Sacar**
 
@@ -396,6 +401,7 @@ Essa é a rota que será utilizada para realizar o saque de um valor em uma dete
     valor: 10000
 }
 ```
+![Alt text](arquivos/SaqueTransacDesafio2.jpg)
 
 ### **Transferir**
 
@@ -458,6 +464,7 @@ Essa é a rota que será utilizada para  para realizar a transferência de saldo
     mensagem: "Mensagem de erro"
 }
 ```
+![Alt text](arquivos/TranferenciaDesafio2.jpg)
 
 #### **Exemplo do registro de uma transferência**
 
@@ -517,6 +524,7 @@ Essa é a rota que será utilizada para retornar o saldo de uma conta bancária.
     mensagem: "Mensagem de erro"
 }
 ```
+![Alt text](arquivos/saldoDesafio2.jpg)
 
 ### Extrato
 
@@ -605,3 +613,4 @@ Essa é a rota que será utilizada para  listar as transações realizadas de um
     mensagem: 'Mensagem do erro!'
 }
 ```
+![Alt text](extratoDesafio2-1.jpg)
