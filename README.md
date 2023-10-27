@@ -1,12 +1,8 @@
-![](https://i.imgur.com/xG74tOh.png)
+## Sistema-Bancario
+### Projeto sistema bancário criado durante o curso Back End modulo 02
+API REST
 
-# Desafio | Back-end - Módulo 2
-
-Você acabou de ser contratado pela melhor empresa de tecnologia do mundo: a **CUBOS**.
-Sua primeira tarefa como desenvolvedor é criar uma API para o banco digital Cubos Bank.  
-Esse será um projeto **piloto**, ou seja, no futuro outras funcionalidades serão implementadas, portanto, dados do banco (nome, agência, etc.) serão imutáveis.
-
-Seu papel é construir uma RESTful API que permita:
+Linguagem: Javascript
 -   Listagem de contas bancárias
 -   Criar conta bancária
 -   Atualizar os dados do usuário da conta bancária
@@ -15,85 +11,7 @@ Seu papel é construir uma RESTful API que permita:
 -   Sacar de uma conta bancária
 -   Transferir valores entre contas bancárias
 -   Consultar saldo da conta bancária
--   Emitir extrato bancário
-
-**IMPORTANTE: Sempre que a validação de uma requisição falhar, responda com código de erro e mensagem adequada à situação, ok?**
-
-**Exemplo:**
-
-```javascript
-// Quando é informado um número de conta que não existe:
-// HTTP Status 404
-{
-    "mensagem": "Conta não encontrada"
-}
-```
-
----
-
-## **Persistências dos dados**
-
-Os dados serão persistidos em memória, no objeto existente dentro do arquivo `bancodedados.js`. Todas as transações e contas bancárias deverão ser inseridas dentro deste objeto, seguindo a estrutura que já existe.
-
-### **Estrutura do objeto no arquivo `bancodedados.js`**
-
-```javascript
-{
-    banco: {
-        nome: "Cubos Bank",
-        numero: "123",
-        agencia: "0001",
-        senha: "Cubos123Bank",
-    },
-    contas: [
-        // array de contas bancárias
-    ],
-    saques: [
-        // array de saques
-    ],
-    depositos: [
-        // array de depósitos
-    ],
-    transferencias: [
-        // array de transferências
-    ],
-}
-```
-
-**IMPORTANTE: Este arquivo não pode ser alterado ou removido do projeto.**  
-**Portanto, a nomenclatura das propriedades `banco`, `contas`, `saques`, `depositos`, `transferencias`, assim como os valores atribuídos as propriedades `nome`, `numero`, `agencia` e `senha` não devem ser alterados.**
-
----
-
-## **Requisitos obrigatórios**
-
--   Sua API deve seguir o padrão REST
--   Seu código deve estar organizado, delimitando as responsabilidades de cada arquivo adequadamente. Ou seja, é esperado que ele tenha, no mínimo:
-    -   Um arquivo index.js
-    -   Um arquivo servidor.js
-    -   Um arquivo de rotas
-    -   Uma pasta com controladores
--   Qualquer valor (dinheiro) deverá ser representado em centavos (Ex.: R$ 10,00 reais = 1000)
--   Evite códigos duplicados. Antes de copiar e colar, pense se não faz sentido esse pedaço de código estar centralizado numa função.
-
----
-
-## Status Code
-
-Abaixo, listamos os possíveis `status code` esperados como resposta da API.
-
-```javascript
-// 200 (OK) = requisição bem sucedida
-// 201 (Created) = requisição bem sucedida e algo foi criado
-// 204 (No Content) = requisição bem sucedida, sem conteúdo no corpo da resposta
-// 400 (Bad Request) = o servidor não entendeu a requisição pois está com uma sintaxe/formato inválido
-// 401 (Unauthorized) = o usuário não está autenticado (logado)
-// 403 (Forbidden) = o usuário não tem permissão de acessar o recurso solicitado
-// 404 (Not Found) = o servidor não pode encontrar o recurso solicitado
-// 500 (Internal Server Error) = erro inesperado do servidor
-```
-
----
+-   Emitir extrato
 
 ## **Endpoints**
 
@@ -687,16 +605,3 @@ Essa é a rota que será utilizada para  listar as transações realizadas de um
     mensagem: 'Mensagem do erro!'
 }
 ```
-
-## Aulas úteis:
-
--   [Rotas, Intermediários e Controladores](https://aulas.cubos.academy/turma/7d1513ce-ce03-495f-8b7d-c3aef1522063/aulas/f876e20a-5661-4527-8162-5ecd0da5672c)
--   [Aula API REST](https://aulas.cubos.academy/turma/7d1513ce-ce03-495f-8b7d-c3aef1522063/aulas/d09cc687-abc4-494b-9a56-d7697b5e4d0e)
--   [Formatando datas com date-fns](https://aulas.cubos.academy/turma/7d1513ce-ce03-495f-8b7d-c3aef1522063/aulas/b8198f42-34c5-4c81-a936-6d8aff4d50ce)
--   [Aula objetos](https://aulas.cubos.academy/turma/7d1513ce-ce03-495f-8b7d-c3aef1522063/aulas/6cc31181-71b7-4cea-bf60-3f7a0b64ad86)
--   [Aula funções](https://aulas.cubos.academy/turma/7d1513ce-ce03-495f-8b7d-c3aef1522063/aulas/861b1778-bb3a-4f69-858e-14ee896854c5)
--   [Aula de Revisão](https://aulas.cubos.academy/turma/7d1513ce-ce03-495f-8b7d-c3aef1522063/aulas/7b06e71c-6f34-43dd-a985-1935192ac960)
-
-**LEMBRE-SE**: é melhor feito do que perfeito!!!
-
-###### tags: `back-end` `módulo 2` `nodeJS` `API REST` `desafio`
